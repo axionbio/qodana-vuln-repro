@@ -1,0 +1,15 @@
+Run 35129948060. report/results/qodana.sarif.json
+
+results                                : 6
+  RiderSecurityErrorsInspection        : 0
+  VulnerableApi                        : 0
+  by rule                              : CA1822=1, NotAccessedField.Compiler=1, UnusedMember.Global=2, UnusedType.Global=2
+
+RiderSecurityErrorsInspection declared:
+  in tool.driver.rules (314 ids)        : False
+  in tool.extensions[] (4362 ids)        : True
+
+invocations[0]:
+  exitCode                             : 0
+  executionSuccessful                  : True
+  toolExecutionNotifications           : None

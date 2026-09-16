@@ -1,0 +1,15 @@
+version: '1.0'
+linter: qodana-dotnet
+withinDocker: false
+dotnet:
+  solution: Repro.sln
+profile:
+  name: qodana.recommended
+
+# qodana.recommended does not include these two. They are enabled through the
+# include list rather than profile.inspections because profile.name and
+# profile.inspections cannot be combined - the CLI's Profile struct accepts
+# name or path, not both.
+include:
+  - name: RiderSecurityErrorsInspection
+  - name: VulnerableApi

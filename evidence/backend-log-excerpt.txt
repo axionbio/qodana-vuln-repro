@@ -1,0 +1,38 @@
+Run 35129948060. log/*.backend.log.
+
+[1] The unresolvable package. Every lookup returns nothing, so nothing is
+    cached. It is the only package in the solution the service cannot
+    resolve.
+
+13:44:38.033 |V| NuGetSecurityMetadataFetcher  | JetPool(S) #1:12   | No security metadata found for package 'Qvuln.Unlisted.Probe.1.0.0' on 1 security feeds
+13:45:37.515 |V| NuGetSecurityMetadataFetcher  | JetPool(S) #3:15   | No security metadata found for package 'Qvuln.Unlisted.Probe.1.0.0' on 1 security feeds
+13:45:42.417 |V| NuGetSecurityMetadataFetcher  | JetPool(S) #1:12   | No security metadata found for package 'Qvuln.Unlisted.Probe.1.0.0' on 1 security feeds
+
+[2] Vulnerabilities detected and delivered to the Problems View channel
+    (first 6 of 77 lines).
+
+13:44:37.922 |V| ProblemsViewDiagnosticsCollector| JetPool(S) #1:12   | [Error] Newtonsoft.Json 9.0.1 contains vulnerabilities: Packages with vulnerabilities have been detected
+13:44:37.922 |V| ProblemsViewDiagnosticsCollector| JetPool(S) #1:12   | [Error] System.Text.RegularExpressions 4.3.0 contains vulnerabilities: Packages with vulnerabilities have been detected
+13:44:37.922 |V| ProblemsViewDiagnosticsCollector| JetPool(S) #1:12   | [Error] System.Net.Http 4.3.0 contains vulnerabilities: Packages with vulnerabilities have been detected
+13:44:38.478 |V| ProblemsViewDiagnosticsCollector| JetPool(S) #3:15   | [Error] Newtonsoft.Json 9.0.1 contains vulnerabilities: Packages with vulnerabilities have been detected
+13:44:38.478 |V| ProblemsViewDiagnosticsCollector| JetPool(S) #3:15   | [Error] System.Text.RegularExpressions 4.3.0 contains vulnerabilities: Packages with vulnerabilities have been detected
+13:44:38.478 |V| ProblemsViewDiagnosticsCollector| JetPool(S) #3:15   | [Error] System.Net.Http 4.3.0 contains vulnerabilities: Packages with vulnerabilities have been detected
+
+[3] The security metadata walk. Entries on JetPool threads are the
+    solution-load pass; entries on :2 are the inspection report pass.
+
+    The load pass caches everything the service knows, leaving the report
+    pass exactly one package - the unresolvable one - and that throws.
+
+    Note there is no fetcher line for the fetch that throws. All lookups in
+    [1] are on JetPool threads at load time. AssertNonMainThread is the
+    first statement in FetchAsync, so the report-time call throws before it
+    logs anything. The absence of a fetcher line on :2 therefore does not
+    indicate that no fetch was attempted.
+
+13:44:37.393 |V| RiderNuGetInstalledPackageSecurityMetadataCache| JetPool(S) #6:18   | Updating security metadata for project 'WithPackages': 6 package(s) to fetch
+13:45:37.408 |V| RiderNuGetInstalledPackageSecurityMetadataCache| JetPool(S) #2:13   | Updating security metadata for project 'WithPackages': 66 package(s) to fetch
+13:45:52.417 |V| RiderNuGetInstalledPackageSecurityMetadataCache| :2                 | Updating security metadata for project 'Miscellaneous Files': 0 package(s) to fetch
+13:45:52.417 |V| RiderNuGetInstalledPackageSecurityMetadataCache| :2                 | Updating security metadata for project '&': 0 package(s) to fetch
+13:45:52.417 |V| RiderNuGetInstalledPackageSecurityMetadataCache| :2                 | Updating security metadata for project 'src': 0 package(s) to fetch
+13:45:52.419 |V| RiderNuGetInstalledPackageSecurityMetadataCache| :2                 | Updating security metadata for project 'WithPackages': 1 package(s) to fetch

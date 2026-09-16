@@ -1,0 +1,12 @@
+bin/
+obj/
+.dotnet/
+
+# Built by the workflow's pack step; NuGet.config serves the probe from here.
+localfeed/
+
+# Local scratch from investigating the larger configurations. Nothing here
+# belongs in the repository.
+qrun/
+src/GeneratedProjects/
+src/WithPackages/Generated/

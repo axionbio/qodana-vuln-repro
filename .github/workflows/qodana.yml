@@ -1,0 +1,64 @@
+name: Qodana Repro
+
+# workflow_dispatch only. Under pr-mode Qodana analyses just the files in the
+# diff; with none analysable the inspection never runs and nothing crashes.
+on:
+  workflow_dispatch:
+
+jobs:
+  qodana:
+    runs-on: [ self-hosted, Windows ]
+    # A cold linter download is ~7 min; the scan itself is ~25s.
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      # Without a real toolchain every .csproj fails to load and the run
+      # reports Rider toolset and environment errors instead of analysing.
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '8.0.x'
+        env:
+          DOTNET_INSTALL_DIR: ${{ github.workspace }}/.dotnet
+
+      - name: Add .NET to PATH
+        run: echo "${{ github.workspace }}/.dotnet" >> $GITHUB_PATH
+
+      - name: Setup MSBuild.exe
+        uses: microsoft/setup-msbuild@v2
+
+      # Produces the package the vulnerability service cannot resolve. Must run
+      # before restore: NuGet.config points at ./localfeed, which is empty until
+      # this step fills it.
+      - name: Pack the unresolvable probe package
+        shell: pwsh
+        run: dotnet pack tools/probe/Qvuln.Unlisted.Probe.csproj -o localfeed -c Release --nologo
+
+      - name: Qodana Scan
+        uses: JetBrains/qodana-action@v2026.2.1
+        with:
+          # isNativeMode() reads only these args, never qodana.yaml; without it
+          # the action runs a pointless 'qodana pull' and mis-keys its cache.
+          args: --within-docker false
+          # The CLI derives its system directory - where the linter lives - as
+          # dirname(dirname(cache-dir)), so this keeps the linter shared across
+          # runs while the project cache stays per-run.
+          cache-dir: '${{ runner.tool_cache }}\qodana-native\caches\${{ github.run_id }}'
+          use-caches: false
+          upload-result: true
+          use-annotations: false
+        # To run this yourself, add your own Ultimate Plus token as a
+        # repository secret named QODANA_TOKEN and restore:
+        #
+        #   env:
+        #     QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
+        #     QODANA_ENDPOINT: 'https://qodana.cloud'
+        #
+        # The vulnerability checker requires Ultimate Plus; on a lower tier the
+        # report is empty for an unrelated reason, so confirm the job log says
+        # "Qodana license plan: Ultimate Plus" before trusting a clean result.

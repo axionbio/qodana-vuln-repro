@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Packed into ./localfeed and consumed as a NuGet package. Deliberately
+       NOT added to Repro.sln: the point is the package identity, not the code.
+       Qodana's security feed has no metadata for this id, which makes every
+       lookup of it a permanent cache miss. -->
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>Qvuln.Unlisted.Probe</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>qodana-vuln-repro</Authors>
+    <Description>Placeholder package for a Qodana reproduction. Contains no functionality. Never published to nuget.org; the id is deliberately unused there.</Description>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+  </PropertyGroup>
+
+</Project>

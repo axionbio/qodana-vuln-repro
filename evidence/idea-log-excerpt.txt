@@ -1,0 +1,19 @@
+Run 35129948060. log/idea.log, from the inspection's own log line through the
+stack. The exception is 11ms after the marker.
+
+2026-09-16 13:45:52,411 [  93304]   INFO - #c.j.r.p.a.q.RiderSecurityErrorsInspection - Reporting security problems
+2026-09-16 13:45:52,422 [  93315] SEVERE - #o.j.q.s.i.r.e.ExternalToolsProvider - This action cannot be executed on the :2 thread., reason: JetBrains.Threading.ThreadAccessException: This action cannot be executed on the :2 thread.
+   at JetBrains.Threading.JetDispatcherEx.AssertNonMainThread(JetDispatcher dispatcher)
+   at JetBrains.ProjectModel.NuGet.Searching.Fetching.NuGetSecurityMetadataFetcher.FetchAsync(PackageIdentity identity, Lifetime lifetime, Boolean noCache)
+   at JetBrains.Rider.Backend.Features.NuGet.Security.RiderNuGetInstalledPackageSecurityMetadataCache.FetchAndStoreAsync(PackageIdentity package)
+   at JetBrains.Rider.Backend.Features.NuGet.Security.RiderNuGetInstalledPackageSecurityMetadataCache.UpdateProjectAsync(IProject project)
+   at JetBrains.Rider.Backend.Features.NuGet.Security.RiderNuGetInstalledPackageSecurityMetadataCache.UpdateProjectsAsync(IReadOnlyCollection`1 projects)
+   at JetBrains.Rider.Backend.Features.NuGet.Security.Vulnerabilities.RiderPackageVulnerabilitiesProblemsViewReporter.<>c__DisplayClass12_0.<<-ctor>b__1>d.MoveNext()
+com.jetbrains.rd.util.reactive.RdFault: This action cannot be executed on the :2 thread., reason: JetBrains.Threading.ThreadAccessException: This action cannot be executed on the :2 thread.
+   at JetBrains.Threading.JetDispatcherEx.AssertNonMainThread(JetDispatcher dispatcher)
+   at JetBrains.ProjectModel.NuGet.Searching.Fetching.NuGetSecurityMetadataFetcher.FetchAsync(PackageIdentity identity, Lifetime lifetime, Boolean noCache)
+   at JetBrains.Rider.Backend.Features.NuGet.Security.RiderNuGetInstalledPackageSecurityMetadataCache.FetchAndStoreAsync(PackageIdentity package)
+   at JetBrains.Rider.Backend.Features.NuGet.Security.RiderNuGetInstalledPackageSecurityMetadataCache.UpdateProjectAsync(IProject project)
+   at JetBrains.Rider.Backend.Features.NuGet.Security.RiderNuGetInstalledPackageSecurityMetadataCache.UpdateProjectsAsync(IReadOnlyCollection`1 projects)
+   at JetBrains.Rider.Backend.Features.NuGet.Security.Vulnerabilities.RiderPackageVulnerabilitiesProblemsViewReporter.<>c__DisplayClass12_0.<<-ctor>b__1>d.MoveNext()
+	at com.jetbrains.rd.framework.RdTaskResult$Companion.read(TaskInterfaces.kt:30)
